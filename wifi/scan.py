@@ -8,7 +8,7 @@ from wifi.utils import db2dbm
 from wifi.exceptions import InterfaceError
 
 
-class Cell(object):
+class Cell:
     """
     Presents a Python interface to the output of iwlist.
     """
