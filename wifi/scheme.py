@@ -57,7 +57,7 @@ def configuration(cell, passkey=None):
 bound_ip_re = re.compile(r'^bound to (?P<ip_address>\S+)', flags=re.MULTILINE)
 
 
-class Scheme(object):
+class Scheme:
     """
     Saved configuration for connecting to a wireless network.  This
     class provides a Python interface to the /etc/network/interfaces
@@ -183,7 +183,7 @@ class Scheme(object):
             raise ConnectionError(f"Failed to connect to {self}")
 
 
-class Connection(object):
+class Connection:
     """
     The connection object returned when connecting to a Scheme.
     """
