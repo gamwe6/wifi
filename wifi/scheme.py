@@ -87,12 +87,12 @@ class Scheme(object):
         Returns the representation of a scheme that you would need
         in the /etc/network/interfaces file.
         """
-        iface = "iface {interface}-{name} inet dhcp".format(**vars(self))
-        options = ''.join("\n    {k} {v}".format(k=k, v=v) for k, v in self.options.items())
+        iface = f"iface {self.interface}-{self.name} inet dhcp"
+        options = ''.join(f"\n    {k} {v}" for k, v in self.options.items())
         return iface + options + '\n'
 
     def __repr__(self):
-        return 'Scheme(interface={interface!r}, name={name!r}, options={options!r}'.format(**vars(self))
+        return f'Scheme(interface={interface!r}, name={name!r}, options={options!r}'
 
     @classmethod
     def all(cls):
@@ -140,7 +140,7 @@ class Scheme(object):
         """
         Deletes the configuration from the :attr:`interfaces` file.
         """
-        iface = "iface %s-%s inet dhcp" % (self.interface, self.name)
+        iface = f"iface {self.interface}-{self.name} inet dhcp"
         content = ''
         with open(self.interfaces, 'r') as f:
             skip = False
@@ -156,13 +156,13 @@ class Scheme(object):
 
     @property
     def iface(self):
-        return '{0}-{1}'.format(self.interface, self.name)
+        return f'{self.interface}-{self.name}'
 
     def as_args(self):
         args = list(itertools.chain.from_iterable(
-            ('-o', '{k}={v}'.format(k=k, v=v)) for k, v in self.options.items()))
+            ('-o', f'{k}={v}') for k, v in self.options.items()))
 
-        return [self.interface + '=' + self.iface] + args
+        return [f'{self.interface}={self.iface}'] + args
 
     def activate(self):
         """
@@ -180,7 +180,7 @@ class Scheme(object):
         if matches:
             return Connection(scheme=self, ip_address=matches.group('ip_address'))
         else:
-            raise ConnectionError("Failed to connect to %r" % self)
+            raise ConnectionError(f"Failed to connect to {self}")
 
 
 class Connection(object):

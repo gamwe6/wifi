@@ -27,7 +27,7 @@ class Cell(object):
         self.noise = None
 
     def __repr__(self):
-        return 'Cell(ssid={ssid})'.format(**vars(self))
+        return f'Cell(ssid={ssid})'
 
     @classmethod
     def all(cls, interface):

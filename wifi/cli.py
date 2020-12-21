@@ -20,8 +20,8 @@ def fuzzy_find_cell(interface, query):
     matches = Cell.where(interface, match_partial)
 
     num_unique_matches = len(set(cell.ssid for cell in matches))
-    assert num_unique_matches > 0, "Couldn't find a network that matches '{}'".format(query)
-    assert num_unique_matches < 2, "Found more than one network that matches '{}'".format(query)
+    assert num_unique_matches > 0, f"Couldn't find a network that matches '{query}'"
+    assert num_unique_matches < 2, f"Found more than one network that matches '{query}'"
 
     # Several cells of the same SSID
     if len(matches) > 1:
@@ -79,17 +79,17 @@ def connect_command(args):
         except AssertionError:
             pass
         except IOError:
-            assert False, "Can't write on {0!r}, do you have required privileges?".format(args.file)
+            assert False, f"Can't write on {args.file!r}, do you have required privileges?"
 
         scheme = scheme_class.for_cell(*get_scheme_params(args.interface, 'adhoc', args.scheme))
     else:
         scheme = scheme_class.find(args.interface, args.scheme)
-        assert scheme, "Couldn't find a scheme named {0!r}, did you mean to use -a?".format(args.scheme)
+        assert scheme, f"Couldn't find a scheme named {args.scheme!r}, did you mean to use -a?"
 
     try:
         scheme.activate()
     except ConnectionError:
-        assert False, "Failed to connect to %s." % scheme.name
+        assert False, f"Failed to connect to {scheme.name}."
 
 
 def autoconnect_command(args):
@@ -99,11 +99,11 @@ def autoconnect_command(args):
         # TODO: make it easier to get the SSID off of a scheme.
         ssid = scheme.options.get('wpa-ssid', scheme.options.get('wireless-essid'))
         if ssid in ssids:
-            sys.stderr.write('Connecting to "%s".\n' % ssid)
+            sys.stderr.write(f'Connecting to "{ssid}".\n')
             try:
                 scheme.activate()
             except ConnectionError:
-                assert False, "Failed to connect to %s." % scheme.name
+                assert False, f"Failed to connect to {scheme.name}."
             break
     else:
         assert False, "Couldn't find any schemes that are currently available."
